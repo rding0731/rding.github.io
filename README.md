@@ -2,4 +2,4 @@
 
 Copyright @ Ruonan Ding
 
-This is my work page.
+This is my own page.
