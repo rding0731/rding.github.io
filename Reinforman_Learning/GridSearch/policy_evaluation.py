@@ -17,16 +17,17 @@ Value Function V(s) can only show how good it is for an agent to be in a particu
 Note that the value function is specific to a given policy. 
 ''' 
 
-##cd C:\Users\ruonan.ding\Documents\Github\rding.github.io\Reinforman_Learning\GridSearch
+cd C:\Users\ruonan.ding\Documents\Github\rding.github.io\Reinforman_Learning\GridSearch
 ## This is to import the gridSearch_setup
                                         
 import numpy as np
 import gridSearch_setup
 
 env = gridSearch_setup.GridworldEnv()
-env.nS
 
-def policy_evaluation(policy, env, discount_factor = 0.75, theta = 1e-4):
+print(env.P)
+
+def policy_evaluation(policy, env, discount_factor = 1, theta = 1e-4):
     """
     Evaluate a policy given an environment and a full description of the environment's dynamics.
     
@@ -51,7 +52,7 @@ def policy_evaluation(policy, env, discount_factor = 0.75, theta = 1e-4):
                     
                     v += action_prob * prob * (reward + discount_factor * V[next_state]) ## calculate the expected value
                     
-#                    print(s, a, action_prob, prob, next_state, reward, done, v)
+                    #print(s, a, action_prob, prob, next_state, reward, done, v)
             delta = max(delta, np.abs(v-V[s])) ## how much the value function changes in this one full backup
             V[s] = v    
        
@@ -85,7 +86,7 @@ print("")
 '''
 Policy Iteration
 '''
-def policy_improvement(env, policy_eval_fn=policy_evaluation, discount_factor=0.7):
+def policy_improvement(env, policy_eval_fn=policy_evaluation, discount_factor=1):
     """
     Policy Improvement Algorithm. Iteratively evaluates and improves a policy
     until an optimal policy is found.
@@ -133,10 +134,11 @@ def policy_improvement(env, policy_eval_fn=policy_evaluation, discount_factor=0.
             # Greedily update the policy
             if chosen_a != best_a:
                 policy_stable = False
-                counter += 1
             policy[s] = np.eye(env.nA)[best_a] ## create a 4* 4 diagonally and then pick an index
         
         # If the policy is stable we've found an optimal policy. Return it
+        
+        counter = counter + 1
         if policy_stable:
             return policy, V, counter
   
@@ -159,6 +161,23 @@ print("")
 print("Reshaped Grid Value Function:")
 print(v.reshape(env.shape))
 print("")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 '''
