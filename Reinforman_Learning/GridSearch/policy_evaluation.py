@@ -83,8 +83,9 @@ print("")
 
 
 
+
 '''
-Policy Iteration
+Policy Iteration - Follow a random polic and to maximize that going forward
 '''
 def policy_improvement(env, policy_eval_fn=policy_evaluation, discount_factor=1):
     """
@@ -144,7 +145,6 @@ def policy_improvement(env, policy_eval_fn=policy_evaluation, discount_factor=1)
   
 '''optimal policy'''
 policy, v, iteration = policy_improvement(env)
-iteration
 
 print("Policy Probability Distribution:")
 print(policy)
@@ -168,20 +168,8 @@ print("")
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 '''
-Value iteration
+Value-action iteration
 '''
 def value_iteration(env, theta=0.0001, discount_factor=1.0):
     """
@@ -215,8 +203,10 @@ def value_iteration(env, theta=0.0001, discount_factor=1.0):
         return A
     
     V = np.zeros(env.nS)
+    
+    counter = 0
     while True:
-        # Stopping condition
+        # Initiate the delta at 0
         delta = 0
         # Update each state...
         for s in range(env.nS):
@@ -226,7 +216,8 @@ def value_iteration(env, theta=0.0001, discount_factor=1.0):
             # Calculate delta across all states seen so far
             delta = max(delta, np.abs(best_action_value - V[s]))
             # Update the value function
-            V[s] = best_action_value        
+            V[s] = best_action_value
+        counter += 1
         # Check if we can stop 
         if delta < theta:
             break
@@ -240,4 +231,6 @@ def value_iteration(env, theta=0.0001, discount_factor=1.0):
         # Always take the best action
         policy[s, best_action] = 1.0
     
-    return policy, V
+    return policy, V, counter
+
+(value_iteration(env))[2]
